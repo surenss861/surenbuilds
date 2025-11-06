@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --sb-blue: #1B73FF;
+  --sb-blue-2: #0E4BDB;
+  --ink: #0A0A0A;
+  --paper: #F7F7F7;
+  --background: #0a0a0a;
+  --foreground: #F5F5F5;
+  --font-inter: 'Inter', system-ui, sans-serif;
+  --font-playfair: 'Playfair Display', serif;
 }
 
 @theme inline {
@@ -12,15 +18,177 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  /* scroll-behavior removed - using Lenis for smooth scrolling */
+}
+
+html, body {
+  height: 100%;
+  background: radial-gradient(1200px 700px at 70% -10%, rgba(27, 115, 255, 0.18), transparent), #0A0A0A;
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/* Focus ring for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--sb-blue);
+  outline-offset: 2px;
+}
+
+/* Glass card utility */
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: relative;
+}
+
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Vignette overlay */
+.vignette {
+  position: relative;
+}
+
+.vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Logo glow animation */
+@keyframes logoGlow {
+  0%, 100% {
+    filter: drop-shadow(0 25px 80px rgba(27,115,255,.35));
+  }
+  50% {
+    filter: drop-shadow(0 25px 100px rgba(27,115,255,.5));
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom cursor trail - will be shown via component */
+
+/* Hide scrollbar for horizontal scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Blue gradient backgrounds */
+.bg-blue-gradient {
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+.bg-blue-gradient-radial {
+  background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15), transparent 70%);
+}
+
+/* Syntax highlighting for code blocks */
+.hljs {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+/* Prose styles for MDX content */
+.prose {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  color: white;
+  font-weight: 700;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.prose p {
+  margin-bottom: 1.5em;
+  line-height: 1.75;
+}
+
+.prose ul,
+.prose ol {
+  margin-bottom: 1.5em;
+  padding-left: 1.5em;
+}
+
+.prose li {
+  margin-bottom: 0.5em;
+}
+
+.prose a {
+  color: white;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  opacity: 0.8;
+}
+
+.prose code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+
+.prose pre {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Cursor Glow Effect */
+.cursor-glow {
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(27, 115, 255, 0.15), transparent 70%);
+  position: fixed;
+  pointer-events: none;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  z-index: 9999;
+}
+
+/* Section Transition Fog */
+.section-transition-fog {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(27, 115, 255, 0.05) 30%,
+    rgba(27, 115, 255, 0.08) 50%,
+    rgba(27, 115, 255, 0.05) 70%,
+    transparent 100%
+  );
+  backdrop-filter: blur(1px);
 }

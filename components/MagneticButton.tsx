@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import clsx from "clsx";
 
 interface MagneticButtonProps {
   children: React.ReactNode;
@@ -58,7 +59,11 @@ export default function MagneticButton({
     <motion.a
       ref={ref}
       href={href}
-      className={`group relative px-8 py-4 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 ${baseStyles} ${className}`}
+      className={clsx(
+        "group relative px-8 py-4 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 overflow-hidden",
+        baseStyles,
+        className
+      )}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
@@ -66,10 +71,20 @@ export default function MagneticButton({
         rotateX,
         rotateY,
         transformStyle: "preserve-3d",
+        boxShadow: variant === "primary" ? "0 0 20px rgba(27,115,255,0.35)" : undefined,
       }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
+      {/* Ripple effect */}
+      {isHovered && (
+        <motion.span
+          className="absolute inset-0 rounded-full bg-white/20"
+          initial={{ scale: 0, opacity: 1 }}
+          animate={{ scale: 4, opacity: 0 }}
+          transition={{ duration: 0.6 }}
+        />
+      )}
       <motion.span
         style={{ transform: "translateZ(75px)" }}
         className="relative z-10"
