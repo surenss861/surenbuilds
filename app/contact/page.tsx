@@ -32,10 +32,27 @@ function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you'd send this to an API endpoint
-    // For now, we'll just show a success message
-    setSubmitted(true);
-    // You can integrate with a service like Formspree, SendGrid, or your own API
+    
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        alert(data.error || "Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Failed to send message. Please try again.");
+    }
   };
 
   return (
@@ -154,7 +171,7 @@ function ContactForm() {
               Book a 15-minute discovery call to discuss your project in detail.
             </p>
             <a
-              href="https://cal.com/suren" // Replace with your actual calendar link
+              href="https://calendly.com/surensureshkumar"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-8 py-4 rounded-full border border-white/20 text-white font-semibold hover:bg-white/10 transition-colors"

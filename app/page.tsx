@@ -1,7 +1,6 @@
 import { getPersonalProjects, getClientProjects } from "@/lib/projects";
 import Hero from "@/components/Hero";
 import ProjectGrid from "@/components/ProjectGrid";
-import CTA from "@/components/CTA";
 import SectionHeader from "@/components/SectionHeader";
 import PricingAnchor from "@/components/PricingAnchor";
 import RetainerServices from "@/components/RetainerServices";
@@ -67,12 +66,6 @@ export default async function Home() {
       <AnimatedSection delay={0.15}>
         <RetainerServices />
       </AnimatedSection>
-      
-      <div className="py-20 md:py-32">
-        <AnimatedSection delay={0.2}>
-          <CTA />
-        </AnimatedSection>
-      </div>
     </div>
   );
 }
