@@ -27,6 +27,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Suren Builds | Web Development Portfolio",
   description: "Showcasing premium web development projects. Custom websites built with Next.js, modern design, and proven results.",
+  icons: {
+    icon: "/brand/s-logo.svg",
+    shortcut: "/brand/s-logo.svg",
+    apple: "/brand/s-logo.svg",
+  },
   openGraph: {
     title: "Suren Builds | Web Development Portfolio",
     description: "Showcasing premium web development projects. Custom websites built with Next.js, modern design, and proven results.",
