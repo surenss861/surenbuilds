@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ShoppingBag, Sparkles, Building2 } from "lucide-react";
+import { ShoppingBag, Sparkles, Building2, ArrowRight, Globe } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
+import MagneticButton from "@/components/MagneticButton";
 
 const concepts = [
   {
@@ -145,6 +146,33 @@ export default function ConceptsPage() {
               );
             })}
           </div>
+
+          {/* Other Industries CTA */}
+          <AnimatedSection delay={0.5}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="mt-20 text-center"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/70 text-sm font-medium mb-6">
+                <Globe className="w-4 h-4" />
+                <span>Not Your Industry?</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-white">
+                We Work Across All Industries
+              </h2>
+              <p className="text-lg md:text-xl text-white/60 mb-8 max-w-2xl mx-auto leading-relaxed">
+                While these are some of our featured concepts, we're ready to take on projects 
+                in any industry. From healthcare to hospitality, technology to real estate, 
+                we adapt our expertise to your unique needs.
+              </p>
+              <MagneticButton href="/contact" variant="primary">
+                Discuss Your Project
+                <ArrowRight className="w-4 h-4" />
+              </MagneticButton>
+            </motion.div>
+          </AnimatedSection>
         </div>
       </section>
     </div>

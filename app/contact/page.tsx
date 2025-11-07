@@ -1,8 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState, useEffect, Suspense } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, Suspense, useRef } from "react";
 import { useSearchParams } from "next/navigation";
+import { ChevronDown } from "lucide-react";
+
+const projectTypes = [
+  { value: "website", label: "New Website" },
+  { value: "redesign", label: "Website Redesign" },
+  { value: "audit", label: "Site Audit" },
+  { value: "consultation", label: "Consultation" },
+  { value: "other", label: "Other" },
+];
 
 function ContactForm() {
   const searchParams = useSearchParams();
@@ -14,6 +23,8 @@ function ContactForm() {
     projectType: "website",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const email = searchParams?.get("email");
@@ -29,6 +40,25 @@ function ContactForm() {
       }));
     }
   }, [searchParams]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
+  const selectedProjectType = projectTypes.find(pt => pt.value === formData.projectType) || projectTypes[0];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -128,18 +158,48 @@ function ContactForm() {
                 <label htmlFor="projectType" className="block text-sm font-medium mb-2">
                   Project Type
                 </label>
-                <select
-                  id="projectType"
-                  value={formData.projectType}
-                  onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-white/30 focus:outline-none transition-colors"
-                >
-                  <option value="website">New Website</option>
-                  <option value="redesign">Website Redesign</option>
-                  <option value="audit">Site Audit</option>
-                  <option value="consultation">Consultation</option>
-                  <option value="other">Other</option>
-                </select>
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    type="button"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-white/30 focus:outline-none transition-colors flex items-center justify-between text-left"
+                  >
+                    <span>{selectedProjectType.label}</span>
+                    <ChevronDown 
+                      className={`w-5 h-5 text-white/60 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+                  
+                  <AnimatePresence>
+                    {isDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute z-50 w-full mt-2 rounded-lg bg-[#0A0A0A] border border-white/10 shadow-2xl overflow-hidden"
+                      >
+                        {projectTypes.map((type) => (
+                          <button
+                            key={type.value}
+                            type="button"
+                            onClick={() => {
+                              setFormData({ ...formData, projectType: type.value });
+                              setIsDropdownOpen(false);
+                            }}
+                            className={`w-full px-4 py-3 text-left hover:bg-white/10 transition-colors ${
+                              formData.projectType === type.value
+                                ? "bg-white/10 text-white"
+                                : "text-white/70"
+                            }`}
+                          >
+                            {type.label}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
 
               <div>
